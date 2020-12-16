@@ -1,0 +1,1518 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{sample\_babyweight}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{creating-a-sampled-dataset}{%
+\section{Creating a Sampled Dataset}\label{creating-a-sampled-dataset}}
+
+\textbf{Learning Objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Setup up the environment
+\item
+  Sample the natality dataset to create train, eval, test sets
+\item
+  Preprocess the data in Pandas dataframe
+\end{enumerate}
+
+\hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+In this notebook, we'll read data from BigQuery into our notebook to
+preprocess the data within a Pandas dataframe for a small, repeatable
+sample.
+
+We will set up the environment, sample the natality dataset to create
+train, eval, test splits, and preprocess the data in a Pandas dataframe.
+
+Each learning objective will correspond to a \textbf{\#TODO} in this
+student lab notebook -- try to complete this notebook first and then
+review the
+\href{https://github.com/GoogleCloudPlatform/training-data-analyst/tree/master/courses/machine_learning/deepdive2/end_to_end_ml/solutions/sample_babyweight.ipynb}{solution
+notebook}.
+
+    \hypertarget{set-up-environment-variables-and-load-necessary-libraries}{%
+\subsection{Set up environment variables and load necessary
+libraries}\label{set-up-environment-variables-and-load-necessary-libraries}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}sudo chown \PYZhy{}R jupyter:jupyter /home/jupyter/training\PYZhy{}data\PYZhy{}analyst
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}pip install \PYZhy{}\PYZhy{}user google\PYZhy{}cloud\PYZhy{}bigquery\PY{o}{=}\PY{o}{=}\PY{l+m}{1}.25.0
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Collecting google-cloud-bigquery==1.25.0
+  Downloading google\_cloud\_bigquery-1.25.0-py2.py3-none-any.whl (169 kB)
+     |████████████████████████████████| 169 kB 8.3 MB/s eta 0:00:01
+Requirement already satisfied: protobuf>=3.6.0 in
+/opt/conda/lib/python3.7/site-packages (from google-cloud-bigquery==1.25.0)
+(3.13.0)
+Requirement already satisfied: google-auth<2.0dev,>=1.9.0 in
+/opt/conda/lib/python3.7/site-packages (from google-cloud-bigquery==1.25.0)
+(1.23.0)
+Collecting google-resumable-media<0.6dev,>=0.5.0
+  Downloading google\_resumable\_media-0.5.1-py2.py3-none-any.whl (38 kB)
+Requirement already satisfied: google-cloud-core<2.0dev,>=1.1.0 in
+/opt/conda/lib/python3.7/site-packages (from google-cloud-bigquery==1.25.0)
+(1.3.0)
+Requirement already satisfied: six<2.0.0dev,>=1.13.0 in
+/opt/conda/lib/python3.7/site-packages (from google-cloud-bigquery==1.25.0)
+(1.15.0)
+Requirement already satisfied: google-api-core<2.0dev,>=1.15.0 in
+/opt/conda/lib/python3.7/site-packages (from google-cloud-bigquery==1.25.0)
+(1.22.4)
+Requirement already satisfied: setuptools in /opt/conda/lib/python3.7/site-
+packages (from protobuf>=3.6.0->google-cloud-bigquery==1.25.0) (50.3.2)
+Requirement already satisfied: cachetools<5.0,>=2.0.0 in
+/opt/conda/lib/python3.7/site-packages (from google-auth<2.0dev,>=1.9.0->google-
+cloud-bigquery==1.25.0) (4.1.1)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in
+/opt/conda/lib/python3.7/site-packages (from google-auth<2.0dev,>=1.9.0->google-
+cloud-bigquery==1.25.0) (0.2.8)
+Requirement already satisfied: rsa<5,>=3.1.4; python\_version >= "3.5" in
+/opt/conda/lib/python3.7/site-packages (from google-auth<2.0dev,>=1.9.0->google-
+cloud-bigquery==1.25.0) (4.6)
+Requirement already satisfied: googleapis-common-protos<2.0dev,>=1.6.0 in
+/opt/conda/lib/python3.7/site-packages (from google-api-
+core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (1.52.0)
+Requirement already satisfied: pytz in /opt/conda/lib/python3.7/site-packages
+(from google-api-core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (2020.4)
+Requirement already satisfied: requests<3.0.0dev,>=2.18.0 in
+/opt/conda/lib/python3.7/site-packages (from google-api-
+core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (2.24.0)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in
+/opt/conda/lib/python3.7/site-packages (from pyasn1-modules>=0.2.1->google-
+auth<2.0dev,>=1.9.0->google-cloud-bigquery==1.25.0) (0.4.8)
+Requirement already satisfied: chardet<4,>=3.0.2 in
+/opt/conda/lib/python3.7/site-packages (from requests<3.0.0dev,>=2.18.0->google-
+api-core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (3.0.4)
+Requirement already satisfied: idna<3,>=2.5 in /opt/conda/lib/python3.7/site-
+packages (from requests<3.0.0dev,>=2.18.0->google-api-
+core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (2.10)
+Requirement already satisfied: certifi>=2017.4.17 in
+/opt/conda/lib/python3.7/site-packages (from requests<3.0.0dev,>=2.18.0->google-
+api-core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (2020.11.8)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in
+/opt/conda/lib/python3.7/site-packages (from requests<3.0.0dev,>=2.18.0->google-
+api-core<2.0dev,>=1.15.0->google-cloud-bigquery==1.25.0) (1.25.11)
+Installing collected packages: google-resumable-media, google-cloud-bigquery
+\textcolor{ansi-red}{ERROR: After October 2020 you may experience errors when installing or
+updating packages. This is because pip will change the way that it resolves
+dependency conflicts.
+
+We recommend you use --use-feature=2020-resolver to test your packages with the
+new resolver before it becomes the default.
+
+tfx 0.23.0 requires attrs<20,>=19.3.0, but you'll have attrs 20.3.0 which is
+incompatible.
+tfx 0.23.0 requires google-resumable-media<0.7.0,>=0.6.0, but you'll have
+google-resumable-media 0.5.1 which is incompatible.
+tfx 0.23.0 requires kubernetes<12,>=10.0.1, but you'll have kubernetes 12.0.0
+which is incompatible.
+tfx 0.23.0 requires pyarrow<0.18,>=0.17, but you'll have pyarrow 2.0.0 which is
+incompatible.
+google-cloud-storage 1.30.0 requires google-resumable-media<2.0dev,>=0.6.0, but
+you'll have google-resumable-media 0.5.1 which is incompatible.}
+Successfully installed google-cloud-bigquery-1.25.0 google-resumable-media-0.5.1
+    \end{Verbatim}
+
+    \textbf{Note}: Restart your kernel to use updated packages.
+
+    Kindly ignore the deprecation warnings and incompatibility errors
+related to google-cloud-storage.
+
+    Import necessary libraries.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{google}\PY{n+nn}{.}\PY{n+nn}{cloud} \PY{k+kn}{import} \PY{n}{bigquery}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Lab Task \#1:} Set up environment variables so that we can use
+them throughout the notebook
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bash}
+\PYZsh{} TODO 1
+\PYZsh{} TODO \PYZhy{}\PYZhy{} Your code here.
+echo \PYZdq{}Your current GCP Project Name is: \PYZdq{}\PYZdl{}PROJECT
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Your current GCP Project Name is:
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{PROJECT} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{qwiklabs\PYZhy{}gcp\PYZhy{}03\PYZhy{}5d3dc033c852}\PY{l+s+s2}{\PYZdq{}}  \PY{c+c1}{\PYZsh{} Replace with your PROJECT}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{create-ml-datasets-by-sampling-using-bigquery}{%
+\subsection{Create ML datasets by sampling using
+BigQuery}\label{create-ml-datasets-by-sampling-using-bigquery}}
+
+We'll begin by sampling the BigQuery data to create smaller datasets.
+Let's create a BigQuery client that we'll use throughout the lab.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bq} \PY{o}{=} \PY{n}{bigquery}\PY{o}{.}\PY{n}{Client}\PY{p}{(}\PY{n}{project} \PY{o}{=} \PY{n}{PROJECT}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We need to figure out the right way to divide our hash values to get our
+desired splits. To do that we need to define some values to hash within
+the module. Feel free to play around with these values to get the
+perfect combination.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{modulo\PYZus{}divisor} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{train\PYZus{}percent} \PY{o}{=} \PY{l+m+mf}{80.0}
+\PY{n}{eval\PYZus{}percent} \PY{o}{=} \PY{l+m+mf}{10.0}
+
+\PY{n}{train\PYZus{}buckets} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{modulo\PYZus{}divisor} \PY{o}{*} \PY{n}{train\PYZus{}percent} \PY{o}{/} \PY{l+m+mf}{100.0}\PY{p}{)}
+\PY{n}{eval\PYZus{}buckets} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{modulo\PYZus{}divisor} \PY{o}{*} \PY{n}{eval\PYZus{}percent} \PY{o}{/} \PY{l+m+mf}{100.0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We can make a series of queries to check if our bucketing values result
+in the correct sizes of each of our dataset splits and then adjust
+accordingly. Therefore, to make our code more compact and reusable,
+let's define a function to return the head of a dataframe produced from
+our queries up to a certain number of rows.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{count}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Displays count rows from dataframe head from query.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        query: str, query to be run on BigQuery, results stored in dataframe.}
+\PY{l+s+sd}{        count: int, number of results from head of dataframe to display.}
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        Dataframe head with count number of results.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{df} \PY{o}{=} \PY{n}{bq}\PY{o}{.}\PY{n}{query}\PY{p}{(}
+        \PY{n}{query} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ LIMIT }\PY{l+s+si}{\PYZob{}limit\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{n}{limit}\PY{o}{=}\PY{n}{count}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}dataframe}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{n}{count}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    For our first query, we're going to use the original query above to get
+our label, features, and columns to combine into our hash which we will
+use to perform our repeatable splitting. There are only a limited number
+of years, months, days, and states in the dataset. Let's see what the
+hash values are. We will need to include all of these extra columns to
+hash on to get a fairly uniform spread of the data. Feel free to try
+less or more in the hash and see how it changes your results.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Get label, features, and columns to hash and split into buckets}
+\PY{n}{hash\PYZus{}cols\PYZus{}fixed\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    weight\PYZus{}pounds,}
+\PY{l+s+s2}{    is\PYZus{}male,}
+\PY{l+s+s2}{    mother\PYZus{}age,}
+\PY{l+s+s2}{    plurality,}
+\PY{l+s+s2}{    gestation\PYZus{}weeks,}
+\PY{l+s+s2}{    year,}
+\PY{l+s+s2}{    month,}
+\PY{l+s+s2}{    CASE}
+\PY{l+s+s2}{        WHEN day IS NULL THEN}
+\PY{l+s+s2}{            CASE}
+\PY{l+s+s2}{                WHEN wday IS NULL THEN 0}
+\PY{l+s+s2}{                ELSE wday}
+\PY{l+s+s2}{            END}
+\PY{l+s+s2}{        ELSE day}
+\PY{l+s+s2}{    END AS date,}
+\PY{l+s+s2}{    IFNULL(state, }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unknown}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{) AS state,}
+\PY{l+s+s2}{    IFNULL(mother\PYZus{}birth\PYZus{}state, }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unknown}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{) AS mother\PYZus{}birth\PYZus{}state}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    publicdata.samples.natality}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{    year \PYZgt{} 2000}
+\PY{l+s+s2}{    AND weight\PYZus{}pounds \PYZgt{} 0}
+\PY{l+s+s2}{    AND mother\PYZus{}age \PYZgt{} 0}
+\PY{l+s+s2}{    AND plurality \PYZgt{} 0}
+\PY{l+s+s2}{    AND gestation\PYZus{}weeks \PYZgt{} 0}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{hash\PYZus{}cols\PYZus{}fixed\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   weight\_pounds  is\_male  mother\_age  plurality  gestation\_weeks  year  \textbackslash{}
+0       7.063611     True          32          1               37  2001
+1       4.687028     True          30          3               33  2001
+2       7.561856     True          20          1               39  2001
+3       7.561856     True          31          1               37  2001
+4       7.312733     True          32          1               40  2001
+5       7.627994    False          30          1               40  2001
+6       7.251004     True          33          1               37  2001
+7       7.500126    False          23          1               39  2001
+8       7.125340    False          33          1               39  2001
+9       7.749249     True          31          1               39  2001
+
+   month  date state mother\_birth\_state
+0     12     3    CO                 CA
+1      6     5    IN                 IN
+2      4     5    MN                 MN
+3     10     5    MS                 MS
+4     11     3    MO                 MO
+5     10     5    NY                 PA
+6     11     5    WA                 WA
+7      9     2    OK                 LA
+8      1     4    TX                 MS
+9      1     1    TX            Foreign
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Using \texttt{COALESCE} would provide the same result as the nested
+\texttt{CASE\ WHEN}. This is preferable when all we want is the first
+non-null instance. To be precise the \texttt{CASE\ WHEN} would become
+\texttt{COALESCE(wday,\ day,\ 0)\ AS\ date}. You can read more about it
+\href{https://cloud.google.com/bigquery/docs/reference/standard-sql/conditional_expressions}{here}.
+
+    Next query will combine our hash columns and will leave us just with our
+label, features, and our hash values.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    weight\PYZus{}pounds,}
+\PY{l+s+s2}{    is\PYZus{}male,}
+\PY{l+s+s2}{    mother\PYZus{}age,}
+\PY{l+s+s2}{    plurality,}
+\PY{l+s+s2}{    gestation\PYZus{}weeks,}
+\PY{l+s+s2}{    FARM\PYZus{}FINGERPRINT(}
+\PY{l+s+s2}{        CONCAT(}
+\PY{l+s+s2}{            CAST(year AS STRING),}
+\PY{l+s+s2}{            CAST(month AS STRING),}
+\PY{l+s+s2}{            CAST(date AS STRING),}
+\PY{l+s+s2}{            CAST(state AS STRING),}
+\PY{l+s+s2}{            CAST(mother\PYZus{}birth\PYZus{}state AS STRING)}
+\PY{l+s+s2}{        )}
+\PY{l+s+s2}{    ) AS hash\PYZus{}values}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}hash\PYZus{}cols\PYZus{}fixed\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CTE\PYZus{}hash\PYZus{}cols\PYZus{}fixed}\PY{o}{=}\PY{n}{hash\PYZus{}cols\PYZus{}fixed\PYZus{}query}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{data\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   weight\_pounds  is\_male  mother\_age  plurality  gestation\_weeks  \textbackslash{}
+0       7.063611     True          32          1               37
+1       4.687028     True          30          3               33
+2       7.561856     True          20          1               39
+3       7.561856     True          31          1               37
+4       7.312733     True          32          1               40
+5       7.627994    False          30          1               40
+6       7.251004     True          33          1               37
+7       7.500126    False          23          1               39
+8       7.125340    False          33          1               39
+9       7.749249     True          31          1               39
+
+           hash\_values
+0  4762325092919148672
+1  2341060194216507348
+2 -8842767231851202242
+3  7957807816914159435
+4 -5961624242430066305
+5  5493295634082918412
+6 -2988893757655690534
+7 -6735199252008114417
+8 -3514093303120687641
+9  2175328516857391398
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The next query is going to find the counts of each of the unique 657484
+\texttt{hash\_values}. This will be our first step at making actual hash
+buckets for our split via the \texttt{GROUP\ BY}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Get the counts of each of the unique hash of our splitting column}
+\PY{n}{first\PYZus{}bucketing\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    hash\PYZus{}values,}
+\PY{l+s+s2}{    COUNT(*) AS num\PYZus{}records}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}data\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{GROUP BY}
+\PY{l+s+s2}{    hash\PYZus{}values}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CTE\PYZus{}data}\PY{o}{=}\PY{n}{data\PYZus{}query}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{first\PYZus{}bucketing\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+           hash\_values  num\_records
+0 -1700820252994836306          741
+1  7948408306271784936          883
+2 -1740303207227716653          794
+3  5160546322234461939         2887
+4 -6766011436514751671          178
+5 -3974717950920322290           78
+6 -8405995084719745013            2
+7  8641800065663952690          875
+8 -2290255568977475467          212
+9  -646460941575642964          463
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The query below performs a second layer of bucketing where now for each
+of these bucket indices we count the number of records.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Get the number of records in each of the hash buckets}
+\PY{n}{second\PYZus{}bucketing\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) AS bucket\PYZus{}index,}
+\PY{l+s+s2}{    SUM(num\PYZus{}records) AS num\PYZus{}records}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}first\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{GROUP BY}
+\PY{l+s+s2}{    ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{))}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}first\PYZus{}bucketing}\PY{o}{=}\PY{n}{first\PYZus{}bucketing\PYZus{}query}\PY{p}{,} \PY{n}{modulo\PYZus{}divisor}\PY{o}{=}\PY{n}{modulo\PYZus{}divisor}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{second\PYZus{}bucketing\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   bucket\_index  num\_records
+0            62       426834
+1            46       281627
+2            76       354090
+3            87       523881
+4             0       277395
+5            63       355283
+6            58       209618
+7            66       402627
+8            34       379000
+9            56       226752
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The number of records is hard for us to easily understand the split, so
+we will normalize the count into percentage of the data in each of the
+hash buckets in the next query.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Calculate the overall percentages}
+\PY{n}{percentages\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    bucket\PYZus{}index,}
+\PY{l+s+s2}{    num\PYZus{}records,}
+\PY{l+s+s2}{    CAST(num\PYZus{}records AS FLOAT64) / (}
+\PY{l+s+s2}{    SELECT}
+\PY{l+s+s2}{        SUM(num\PYZus{}records)}
+\PY{l+s+s2}{    FROM}
+\PY{l+s+s2}{        (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}second\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)) AS percent\PYZus{}records}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}second\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CTE\PYZus{}second\PYZus{}bucketing}\PY{o}{=}\PY{n}{second\PYZus{}bucketing\PYZus{}query}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{percentages\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   bucket\_index  num\_records  percent\_records
+0            70       285539         0.008650
+1            91       333267         0.010096
+2            78       326758         0.009898
+3             0       277395         0.008403
+4             4       398118         0.012060
+5             9       236637         0.007168
+6            33       410226         0.012427
+7             6       548778         0.016624
+8            84       341155         0.010334
+9            38       338150         0.010243
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We'll now select the range of buckets to be used in training.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Choose hash buckets for training and pull in their statistics}
+\PY{n}{train\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    *,}
+\PY{l+s+s2}{    }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{train}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ AS dataset\PYZus{}name}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}percentages\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{    bucket\PYZus{}index \PYZgt{}= 0}
+\PY{l+s+s2}{    AND bucket\PYZus{}index \PYZlt{} }\PY{l+s+si}{\PYZob{}train\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}percentages}\PY{o}{=}\PY{n}{percentages\PYZus{}query}\PY{p}{,}
+    \PY{n}{train\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{train\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   bucket\_index  num\_records  percent\_records dataset\_name
+0             9       236637         0.007168        train
+1            30       333513         0.010103        train
+2            20       432535         0.013103        train
+3            15       263367         0.007978        train
+4            39       224255         0.006793        train
+5             2       492473         0.014918        train
+6            45       265930         0.008056        train
+7            33       410226         0.012427        train
+8            53       230298         0.006976        train
+9            73       411771         0.012474        train
+\end{Verbatim}
+\end{tcolorbox}
+        
+    We'll do the same by selecting the range of buckets to be used
+evaluation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Choose hash buckets for validation and pull in their statistics}
+\PY{n}{eval\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    *,}
+\PY{l+s+s2}{    }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eval}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ AS dataset\PYZus{}name}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}percentages\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{    bucket\PYZus{}index \PYZgt{}= }\PY{l+s+si}{\PYZob{}train\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{    AND bucket\PYZus{}index \PYZlt{} }\PY{l+s+si}{\PYZob{}cum\PYZus{}eval\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}percentages}\PY{o}{=}\PY{n}{percentages\PYZus{}query}\PY{p}{,}
+    \PY{n}{train\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets}\PY{p}{,}
+    \PY{n}{cum\PYZus{}eval\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets} \PY{o}{+} \PY{n}{eval\PYZus{}buckets}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{eval\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   bucket\_index  num\_records  percent\_records dataset\_name
+0            88       423809         0.012838         eval
+1            85       368045         0.011149         eval
+2            87       523881         0.015870         eval
+3            89       256482         0.007770         eval
+4            82       468179         0.014182         eval
+5            84       341155         0.010334         eval
+6            80       312489         0.009466         eval
+7            83       411258         0.012458         eval
+8            81       233538         0.007074         eval
+9            86       274489         0.008315         eval
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Lastly, we'll select the hash buckets to be used for the test split.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Choose hash buckets for testing and pull in their statistics}
+\PY{n}{test\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    *,}
+\PY{l+s+s2}{    }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ AS dataset\PYZus{}name}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}percentages\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{    bucket\PYZus{}index \PYZgt{}= }\PY{l+s+si}{\PYZob{}cum\PYZus{}eval\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{    AND bucket\PYZus{}index \PYZlt{} }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}percentages}\PY{o}{=}\PY{n}{percentages\PYZus{}query}\PY{p}{,}
+    \PY{n}{cum\PYZus{}eval\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets} \PY{o}{+} \PY{n}{eval\PYZus{}buckets}\PY{p}{,}
+    \PY{n}{modulo\PYZus{}divisor}\PY{o}{=}\PY{n}{modulo\PYZus{}divisor}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{test\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   bucket\_index  num\_records  percent\_records dataset\_name
+0            96       529357         0.016036         test
+1            93       215710         0.006534         test
+2            98       374697         0.011351         test
+3            97       480790         0.014564         test
+4            91       333267         0.010096         test
+5            94       431001         0.013056         test
+6            90       286465         0.008678         test
+7            95       313544         0.009498         test
+8            92       336735         0.010201         test
+9            99       223334         0.006765         test
+\end{Verbatim}
+\end{tcolorbox}
+        
+    In the below query, we'll \texttt{UNION\ ALL} all of the datasets
+together so that all three sets of hash buckets will be within one
+table. We added \texttt{dataset\_id} so that we can sort on it in the
+query after.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Union the training, validation, and testing dataset statistics}
+\PY{n}{union\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    0 AS dataset\PYZus{}id,}
+\PY{l+s+s2}{    *}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}train\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{UNION ALL}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    1 AS dataset\PYZus{}id,}
+\PY{l+s+s2}{    *}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}eval\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{UNION ALL}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    2 AS dataset\PYZus{}id,}
+\PY{l+s+s2}{    *}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}test\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CTE\PYZus{}train}\PY{o}{=}\PY{n}{train\PYZus{}query}\PY{p}{,} \PY{n}{CTE\PYZus{}eval}\PY{o}{=}\PY{n}{eval\PYZus{}query}\PY{p}{,} \PY{n}{CTE\PYZus{}test}\PY{o}{=}\PY{n}{test\PYZus{}query}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{union\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   dataset\_id  bucket\_index  num\_records  percent\_records dataset\_name
+0           0            36       246041         0.007453        train
+1           0             3       196889         0.005964        train
+2           0            67       372457         0.011283        train
+3           0             5       449280         0.013610        train
+4           0            35       250505         0.007588        train
+5           0            34       379000         0.011481        train
+6           0            15       263367         0.007978        train
+7           0            71       260774         0.007900        train
+8           0             0       277395         0.008403        train
+9           0            22       257140         0.007789        train
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Lastly, we'll show the final split between train, eval, and test sets.
+We can see both the number of records and percent of the total data. It
+is really close to that we were hoping to get.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Show final splitting and associated statistics}
+\PY{n}{split\PYZus{}query} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{    dataset\PYZus{}id,}
+\PY{l+s+s2}{    dataset\PYZus{}name,}
+\PY{l+s+s2}{    SUM(num\PYZus{}records) AS num\PYZus{}records,}
+\PY{l+s+s2}{    SUM(percent\PYZus{}records) AS percent\PYZus{}records}
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}union\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{GROUP BY}
+\PY{l+s+s2}{    dataset\PYZus{}id,}
+\PY{l+s+s2}{    dataset\PYZus{}name}
+\PY{l+s+s2}{ORDER BY}
+\PY{l+s+s2}{    dataset\PYZus{}id}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CTE\PYZus{}union}\PY{o}{=}\PY{n}{union\PYZus{}query}\PY{p}{)}
+
+\PY{n}{display\PYZus{}dataframe\PYZus{}head\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{split\PYZus{}query}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   dataset\_id dataset\_name  num\_records  percent\_records
+0           0        train     25873134         0.783765
+1           1         eval      3613325         0.109457
+2           2         test      3524900         0.106778
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now that we know that our splitting values produce a good global
+splitting on our data, here's a way to get a well-distributed portion of
+the data in such a way that the train, eval, test sets do not overlap
+and takes a subsample of our global splits.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{dataframe\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{query}\PY{p}{,} \PY{n}{count}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Displays count rows from dataframe head from query.}
+\PY{l+s+sd}{    }
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        query: str, query to be run on BigQuery, results stored in dataframe.}
+\PY{l+s+sd}{        count: int, number of results from head of dataframe to display.}
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        Dataframe head with count number of results.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{df} \PY{o}{=} \PY{n}{bq}\PY{o}{.}\PY{n}{query}\PY{p}{(}
+        \PY{n}{query} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ LIMIT }\PY{l+s+si}{\PYZob{}limit\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{n}{limit}\PY{o}{=}\PY{n}{count}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}dataframe}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Get the number of records in each of the hash buckets}
+\PY{n}{get\PYZus{}train\PYZus{}df} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{	weight\PYZus{}pounds,}
+\PY{l+s+s2}{    is\PYZus{}male,}
+\PY{l+s+s2}{    mother\PYZus{}age,}
+\PY{l+s+s2}{    plurality,}
+\PY{l+s+s2}{    gestation\PYZus{}weeks,    }
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}first\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{     ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) \PYZlt{} }\PY{l+s+si}{\PYZob{}train\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}first\PYZus{}bucketing}\PY{o}{=}\PY{n}{first\PYZus{}bucketing\PYZus{}query}\PY{p}{,} \PY{n}{modulo\PYZus{}divisor}\PY{o}{=}\PY{n}{modulo\PYZus{}divisor}\PY{p}{,}\PY{n}{train\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Get the number of records in each of the hash buckets}
+\PY{n}{get\PYZus{}eval\PYZus{}df} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{	weight\PYZus{}pounds,}
+\PY{l+s+s2}{    is\PYZus{}male,}
+\PY{l+s+s2}{    mother\PYZus{}age,}
+\PY{l+s+s2}{    plurality,}
+\PY{l+s+s2}{    gestation\PYZus{}weeks,    }
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}first\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{     ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) \PYZgt{}= }\PY{l+s+si}{\PYZob{}train\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{     AND ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) \PYZlt{} }\PY{l+s+si}{\PYZob{}cum\PYZus{}eval\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}first\PYZus{}bucketing}\PY{o}{=}\PY{n}{first\PYZus{}bucketing\PYZus{}query}\PY{p}{,} \PY{n}{modulo\PYZus{}divisor}\PY{o}{=}\PY{n}{modulo\PYZus{}divisor}\PY{p}{,} \PY{n}{train\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets}\PY{p}{,}
+    \PY{n}{cum\PYZus{}eval\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets} \PY{o}{+} \PY{n}{eval\PYZus{}buckets}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Get the number of records in each of the hash buckets}
+\PY{n}{get\PYZus{}test\PYZus{}df} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{SELECT}
+\PY{l+s+s2}{	weight\PYZus{}pounds,}
+\PY{l+s+s2}{    is\PYZus{}male,}
+\PY{l+s+s2}{    mother\PYZus{}age,}
+\PY{l+s+s2}{    plurality,}
+\PY{l+s+s2}{    gestation\PYZus{}weeks,    }
+\PY{l+s+s2}{FROM}
+\PY{l+s+s2}{    (}\PY{l+s+si}{\PYZob{}CTE\PYZus{}first\PYZus{}bucketing\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{WHERE}
+\PY{l+s+s2}{     ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) \PYZgt{}= }\PY{l+s+si}{\PYZob{}cum\PYZus{}eval\PYZus{}buckets\PYZcb{}}
+\PY{l+s+s2}{     AND ABS(MOD(hash\PYZus{}values, }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}\PY{l+s+s2}{)) \PYZlt{} }\PY{l+s+si}{\PYZob{}modulo\PYZus{}divisor\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+    \PY{n}{CTE\PYZus{}first\PYZus{}bucketing}\PY{o}{=}\PY{n}{first\PYZus{}bucketing\PYZus{}query}\PY{p}{,} \PY{n}{modulo\PYZus{}divisor}\PY{o}{=}\PY{n}{modulo\PYZus{}divisor}\PY{p}{,}\PY{n}{cum\PYZus{}eval\PYZus{}buckets}\PY{o}{=}\PY{n}{train\PYZus{}buckets} \PY{o}{+} \PY{n}{eval\PYZus{}buckets}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Lab Task \#2:} Sample the natality dataset
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} TODO 2}
+\PY{c+c1}{\PYZsh{} TODO \PYZhy{}\PYZhy{} Your code here.}
+\PY{c+c1}{\PYZsh{} every\PYZus{}n allows us to subsample from each of the hash values}
+\PY{n}{train\PYZus{}df} \PY{o}{=} \PY{n}{dataframe\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{data\PYZus{}query}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{eval\PYZus{}df} \PY{o}{=} \PY{n}{dataframe\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{data\PYZus{}query}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{test\PYZus{}df} \PY{o}{=} \PY{n}{dataframe\PYZus{}from\PYZus{}query}\PY{p}{(}\PY{n}{data\PYZus{}query}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} This helps us get approximately the record counts we want}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There are }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ examples in the train dataset.}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train\PYZus{}df}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There are }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ examples in the validation dataset.}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{eval\PYZus{}df}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{There are }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ examples in the test dataset.}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test\PYZus{}df}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+There are 100 examples in the train dataset.
+There are 100 examples in the validation dataset.
+There are 100 examples in the test dataset.
+    \end{Verbatim}
+
+    \hypertarget{preprocess-data-using-pandas}{%
+\subsection{Preprocess data using
+Pandas}\label{preprocess-data-using-pandas}}
+
+We'll perform a few preprocessing steps to the data in our dataset.
+Let's add extra rows to simulate the lack of ultrasound. That is we'll
+duplicate some rows and make the \texttt{is\_male} field be
+\texttt{Unknown}. Also, if there is more than child we'll change the
+\texttt{plurality} to \texttt{Multiple(2+)}. While we're at it, we'll
+also change the plurality column to be a string. We'll perform these
+operations below.
+
+Let's start by examining the training dataset as is.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   weight\_pounds  is\_male  mother\_age  plurality  gestation\_weeks  \textbackslash{}
+0       4.695846    False          31          1               32
+1       5.687926     True          30          1               36
+2       7.936641    False          24          1               39
+3       8.198992     True          29          1               39
+4       7.061406    False          40          1               37
+
+           hash\_values
+0 -8036809554133325397
+1 -6132026233917866995
+2  8439164539444335271
+3   410994157116516864
+4 -4947124986429933431
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Also, notice that there are some very important numeric fields that are
+missing in some rows (the count in Pandas doesn't count missing data)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       weight\_pounds  mother\_age   plurality  gestation\_weeks   hash\_values
+count     100.000000  100.000000  100.000000       100.000000  1.000000e+02
+mean        7.431849   26.710000    1.030000        38.880000  5.249029e+17
+std         1.200063    6.141916    0.171447         1.950291  5.345227e+18
+min         4.499635   16.000000    1.000000        32.000000 -9.192824e+18
+25\%         6.686620   21.000000    1.000000        38.000000 -3.573048e+18
+50\%         7.593823   27.000000    1.000000        39.000000  7.224660e+17
+75\%         8.190724   31.000000    1.000000        40.000000  5.152596e+18
+max        10.500618   42.000000    2.000000        43.000000  9.221737e+18
+\end{Verbatim}
+\end{tcolorbox}
+        
+    It is always crucial to clean raw data before using in machine learning,
+so we have a preprocessing step. We'll define a \texttt{preprocess}
+function below. Note that the mother's age is an input to our model so
+users will have to provide the mother's age; otherwise, our service
+won't work. The features we use for our model were chosen because they
+are such good predictors and because they are easy enough to collect.
+
+    \textbf{Lab Task \#3:} Preprocess the data in Pandas dataframe
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   \PY{c+c1}{\PYZsh{} TODO 3}
+   \PY{c+c1}{\PYZsh{} TODO \PYZhy{}\PYZhy{} Your code here.}
+\PY{k}{def} \PY{n+nf}{preprocess} \PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{:}    
+    \PY{c+c1}{\PYZsh{} Modify plurality field to be a string}
+    \PY{n}{twins\PYZus{}etc} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                   \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Single(1)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Twins(2)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Triplets(3)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Quadruplets(4)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Quintuplets(5)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plurality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{twins\PYZus{}etc}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Clone data and mask certain columns to simulate lack of ultrasound}
+    \PY{n}{no\PYZus{}ultrasound} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{deep}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Modify is\PYZus{}male}
+    \PY{n}{no\PYZus{}ultrasound}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{is\PYZus{}male}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unknown}\PY{l+s+s2}{\PYZdq{}}
+    
+    \PY{c+c1}{\PYZsh{} Modify plurality}
+    \PY{n}{condition} \PY{o}{=} \PY{n}{no\PYZus{}ultrasound}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plurality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{!=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Single(1)}\PY{l+s+s2}{\PYZdq{}}
+    \PY{n}{no\PYZus{}ultrasound}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{condition}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plurality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Multiple(2+)}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{c+c1}{\PYZsh{} Concatenate both datasets together and shuffle}
+    \PY{k}{return} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}
+        \PY{p}{[}\PY{n}{df}\PY{p}{,} \PY{n}{no\PYZus{}ultrasound}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{frac}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Let's process the train, eval, test set and see a small sample of the
+training data after our preprocessing:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df} \PY{o}{=} \PY{n}{preprocess}\PY{p}{(}\PY{n}{train\PYZus{}df}\PY{p}{)}
+\PY{n}{eval\PYZus{}df} \PY{o}{=} \PY{n}{preprocess}\PY{p}{(}\PY{n}{eval\PYZus{}df}\PY{p}{)}
+\PY{n}{test\PYZus{}df} \PY{o}{=} \PY{n}{preprocess}\PY{p}{(}\PY{n}{test\PYZus{}df}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   weight\_pounds  is\_male  mother\_age  plurality  gestation\_weeks  \textbackslash{}
+0       8.688418     True          31  Single(1)               41
+1       6.393406  Unknown          30  Single(1)               38
+2       5.136771  Unknown          21  Single(1)               37
+3       6.188376  Unknown          42  Single(1)               37
+4       7.625790  Unknown          22  Single(1)               38
+
+           hash\_values
+0 -1569657028734518022
+1 -1052589534453650062
+2 -7363173917873728029
+3  7782266297148452291
+4  7579041105174423352
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+     weight\_pounds  is\_male  mother\_age  plurality  gestation\_weeks  \textbackslash{}
+195       8.198992  Unknown          29  Single(1)               39
+196       7.125340    False          25  Single(1)               40
+197       7.625790     True          26  Single(1)               42
+198       6.492614  Unknown          28  Single(1)               41
+199       8.785421  Unknown          24  Single(1)               41
+
+             hash\_values
+195   410994157116516864
+196  3190725018108452514
+197  5655500751972499290
+198  8297008456970080747
+199  5617905498255901254
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Let's look again at a summary of the dataset. Note that we only see
+numeric columns, so \texttt{plurality} does not show up.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       weight\_pounds  mother\_age  gestation\_weeks   hash\_values
+count     200.000000  200.000000       200.000000  2.000000e+02
+mean        7.431849   26.710000        38.880000  5.249029e+17
+std         1.197044    6.126465         1.945385  5.331780e+18
+min         4.499635   16.000000        32.000000 -9.192824e+18
+25\%         6.686620   21.000000        38.000000 -3.573048e+18
+50\%         7.593823   27.000000        39.000000  7.224660e+17
+75\%         8.190724   31.000000        40.000000  5.152596e+18
+max        10.500618   42.000000        43.000000  9.221737e+18
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{write-to-.csv-files}{%
+\subsection{Write to .csv files}\label{write-to-.csv-files}}
+
+In the final versions, we want to read from files, not Pandas
+dataframes. So, we write the Pandas dataframes out as csv files. Using
+csv files gives us the advantage of shuffling during read. This is
+important for distributed training because some workers might be slower
+than others, and shuffling the data helps prevent the same data from
+being assigned to the slow workers.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Define columns}
+\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{weight\PYZus{}pounds}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+           \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{is\PYZus{}male}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+           \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mother\PYZus{}age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+           \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{plurality}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+           \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gestation\PYZus{}weeks}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Write out CSV files}
+\PY{n}{train\PYZus{}df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}
+    \PY{n}{path\PYZus{}or\PYZus{}buf}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{train.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{eval\PYZus{}df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}
+    \PY{n}{path\PYZus{}or\PYZus{}buf}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eval.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{test\PYZus{}df}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}
+    \PY{n}{path\PYZus{}or\PYZus{}buf}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{test.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bash}
+wc \PYZhy{}l *.csv
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+  200 eval.csv
+  200 test.csv
+  200 train.csv
+  600 total
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bash}
+head *.csv
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+==> eval.csv <==
+7.5618555866,False,20,Single(1),43
+4.7509617461,False,36,Single(1),39
+6.75055446244,True,21,Single(1),38
+7.5618555866,Unknown,20,Single(1),43
+7.91239058318,Unknown,30,Single(1),39
+5.4454178714,Unknown,30,Single(1),35
+7.06140625186,Unknown,40,Single(1),37
+6.87401332916,True,29,Single(1),38
+8.377565956,Unknown,28,Single(1),42
+7.5618555866,Unknown,20,Single(1),40
+
+==> test.csv <==
+7.12534030784,True,18,Single(1),42
+7.0988848364,Unknown,28,Single(1),40
+9.56365292556,Unknown,30,Single(1),40
+9.06320359082,Unknown,29,Single(1),41
+6.1883756943399995,True,17,Single(1),36
+4.7509617461,Unknown,36,Single(1),39
+6.41324720158,Unknown,29,Single(1),38
+6.87621795178,Unknown,19,Single(1),38
+5.1367707046,True,21,Single(1),37
+9.16902547658,Unknown,19,Single(1),40
+
+==> train.csv <==
+8.68841774542,True,31,Single(1),41
+6.393405598,Unknown,30,Single(1),38
+5.1367707046,Unknown,21,Single(1),37
+6.1883756943399995,Unknown,42,Single(1),37
+7.62578964258,Unknown,22,Single(1),38
+8.344496616699999,False,22,Single(1),39
+7.81318256528,Unknown,17,Single(1),37
+7.936641432,True,36,Single(1),38
+8.93754010148,Unknown,31,Single(1),40
+8.3665428429,True,25,Single(1),40
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{bash}
+tail *.csv
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+==> eval.csv <==
+6.393405598,Unknown,30,Single(1),38
+6.944561253,Unknown,32,Single(1),37
+6.4992274837599995,True,31,Twins(2),37
+7.5618555866,True,20,Single(1),40
+7.25100379718,Unknown,28,Single(1),39
+5.3241636273,True,38,Twins(2),34
+6.0406659788,Unknown,33,Single(1),37
+7.12534030784,True,18,Single(1),42
+6.4926136159,Unknown,28,Single(1),41
+7.12534030784,Unknown,25,Single(1),39
+
+==> test.csv <==
+5.8753192823,True,21,Single(1),36
+7.13856804356,Unknown,22,Single(1),38
+7.12534030784,Unknown,18,Single(1),42
+5.4454178714,Unknown,30,Single(1),35
+7.06140625186,Unknown,40,Single(1),37
+7.31273323054,Unknown,23,Single(1),39
+5.8135898489399995,False,37,Single(1),37
+9.93843877096,Unknown,28,Single(1),41
+7.936641432,False,19,Single(1),40
+7.0988848364,False,28,Single(1),40
+
+==> train.csv <==
+8.375361333379999,True,30,Single(1),40
+7.3744626639,Unknown,26,Single(1),39
+4.7509617461,False,36,Single(1),39
+6.75055446244,Unknown,29,Single(1),38
+7.91239058318,False,30,Single(1),39
+8.19899152378,Unknown,29,Single(1),39
+7.12534030784,False,25,Single(1),40
+7.62578964258,True,26,Single(1),42
+6.4926136159,Unknown,28,Single(1),41
+8.7854211407,Unknown,24,Single(1),41
+    \end{Verbatim}
+
+    \hypertarget{lab-summary}{%
+\subsection{Lab Summary:}\label{lab-summary}}
+
+In this lab, we set up the environment, sampled the natality dataset to
+create train, eval, test splits, and preprocessed the data in a Pandas
+dataframe.
+
+    Copyright 2020 Google Inc.~Licensed under the Apache License, Version
+2.0 (the ``License''); you may not use this file except in compliance
+with the License. You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable
+law or agreed to in writing, software distributed under the License is
+distributed on an ``AS IS'' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ANY KIND, either express or implied. See the License for the specific
+language governing permissions and limitations under the License
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
